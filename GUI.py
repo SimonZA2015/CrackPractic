@@ -10,13 +10,14 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__(*args, **kwargs)
 
         self.setWindowTitle("CrackPractic")
-        self.setWindowIcon(QIcon(self.getPath("horse.ico")))
+        self.setWindowIcon(QIcon(self.getPath("data/horse.ico")))
         self.setFixedWidth(1000)
 
         #переменые виджетов
         self.label = QLabel(self.getDay())
-        update = QPushButton("Update")
-        copy = QPushButton("Copy")
+        update = QPushButton("Следущий день")
+        copy = QPushButton("Скопить")
+        athor = QPushButton("Автор")
         vbox = QVBoxLayout(self)
         hbox = QHBoxLayout(self)
         self.vframe = QFrame()
@@ -25,6 +26,7 @@ class MainWindow(QMainWindow):
         #панель с кнопками
         hbox.addWidget(update)
         hbox.addWidget(copy)
+        hbox.addWidget(athor)
         hframe.setLayout(hbox)
 
         #назначаю кнопки
@@ -51,7 +53,7 @@ class MainWindow(QMainWindow):
             text = ' ' + input
             return text
 
-        with open(self.getPath("dataPractic.json"), encoding="utf8") as json_file:
+        with open(self.getPath("data/dataPtactic.json"), encoding="utf8") as json_file:
             data = json.load(json_file)
 
         text = text + '\n ' + data['pm1'][0][1]
