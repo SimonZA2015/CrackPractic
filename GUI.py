@@ -1,4 +1,6 @@
 import sys
+
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QPushButton, QFrame, QVBoxLayout, QHBoxLayout
 from PyQt5.QtCore import Qt
 
@@ -8,6 +10,7 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__(*args, **kwargs)
 
         self.setWindowTitle("CrackPractic")
+        self.setWindowIcon(QIcon(self.getPath("horse.ico")))
         self.setFixedWidth(1000)
 
         #переменые виджетов
@@ -24,6 +27,7 @@ class MainWindow(QMainWindow):
         hbox.addWidget(copy)
         hframe.setLayout(hbox)
 
+        #назначаю кнопки
         update.clicked.connect(self.updateDay)
         copy.clicked.connect(self.copyDay)
 
@@ -47,7 +51,7 @@ class MainWindow(QMainWindow):
             text = ' ' + input
             return text
 
-        with open("data/dataPtactic.json", encoding="utf8") as json_file:
+        with open(self.getPath("dataPractic.json"), encoding="utf8") as json_file:
             data = json.load(json_file)
 
         text = text + '\n ' + data['pm1'][0][1]
@@ -83,6 +87,15 @@ class MainWindow(QMainWindow):
         r.clipboard_append(self.label.text())
         r.update()  # now it stays on the clipboard after the window is closed
         r.destroy()
+
+    def getPath(self, relative_path):
+        import os, sys
+        """ Get absolute path to resource, works for dev and for PyInstaller """
+        if getattr(sys, 'frozen', False):
+            base_path = sys._MEIPASS
+        else:
+            base_path = os.getcwd()
+        return os.path.join(base_path, relative_path)
 
 
 app = QApplication(sys.argv)
